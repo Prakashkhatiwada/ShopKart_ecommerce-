@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "@/context/StoreContext";
 import { api, fullImageUrl } from "@/lib/api";
 
-const ESEWA_GATEWAY = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+const ESEWA_GATEWAY = "https://rc.esewa.com.np/api/epay/main/v2/form";
 
 export default function CheckoutPage() {
   const { user, cart, refresh, loading } = useStore();

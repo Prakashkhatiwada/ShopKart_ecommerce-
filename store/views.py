@@ -97,7 +97,7 @@ import json as _json
 
 ESEWA_SECRET_KEY = "8gBm/:&EnhH.1/q"
 ESEWA_PRODUCT_CODE = "EPAYTEST"
-ESEWA_GATEWAY = "https://rc-epay.esewa.com.np/api/epay/main/v2/form"
+ESEWA_GATEWAY = "https://rc.esewa.com.np/api/epay/main/v2/form"
 
 
 def generate_esewa_signature(total_amount, transaction_uuid, product_code):
@@ -374,6 +374,14 @@ def apiProcessOrder(request):
     total_str = f"{total:.2f}"
     signature = generate_esewa_signature(total_str, transaction_id, ESEWA_PRODUCT_CODE)
 
+    origin = request.headers.get('origin') or request.headers.get('referer')
+    if origin:
+        from urllib.parse import urlparse
+        parsed = urlparse(origin)
+        base_url = f"{parsed.scheme}://{parsed.netloc}"
+    else:
+        base_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+
     esewa_data = {
         'amount': total_str,
         'tax_amount': '0',
@@ -382,8 +390,8 @@ def apiProcessOrder(request):
         'product_code': ESEWA_PRODUCT_CODE,
         'product_service_charge': '0',
         'product_delivery_charge': '0',
-        'success_url': 'http://localhost:3000/checkout/success',
-        'failure_url': 'http://localhost:3000/checkout',
+        'success_url': f'{base_url}/checkout/success',
+        'failure_url': f'{base_url}/checkout',
         'signed_field_names': 'total_amount,transaction_uuid,product_code',
         'signature': signature,
     }
