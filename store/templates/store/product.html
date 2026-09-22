@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <img style="width: 100%" src="{{product.imageURL}}">
+    </div>
+    <div class="col-lg-6">
+        <div class="box-element">
+            <h3>{{product.name}}</h3>
+            <hr>
+            <h4> RS {{product.price}}</h4>
+            <p>{{product.description}}</p>
+            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+        </div>
+    </div>
+</div>
+{% endblock content %}
