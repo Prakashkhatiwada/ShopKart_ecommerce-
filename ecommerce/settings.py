@@ -82,24 +82,25 @@ import os
 import dj_database_url
 
 # Database
-# Uses DATABASE_URL (PostgreSQL / MySQL on Render) if available, otherwise local MySQL
-database_url = os.environ.get('DATABASE_URL')
-if database_url:
+# Uses DATABASE_URL (PostgreSQL on Render) if set, otherwise local MySQL for development
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
-            default=database_url,
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
         )
     }
 else:
+    # Local development - MySQL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'ecommerce',
             'USER': 'root',
             'PASSWORD': '12345',
-            'HOST': 'localhost',
+            'HOST': '127.0.0.1',  # use IP instead of socket
             'PORT': '3306',
         }
     }
